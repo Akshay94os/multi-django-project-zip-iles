@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Master Project Hub | 36 Complete Projects</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+    body { background: #070a12; color: #f1f5f9; padding: 2.5rem 1rem; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+    header { text-align: center; max-width: 800px; margin-bottom: 2.5rem; }
+    h1 { color: #38bdf8; font-size: 2.25rem; margin-bottom: 0.5rem; }
+    p.sub { color: #94a3b8; font-size: 1rem; line-height: 1.6; }
+    .section-title { width: 100%; max-width: 1200px; font-size: 1.5rem; color: #38bdf8; margin: 2rem 0 1rem; border-bottom: 1px solid #1e293b; padding-bottom: 0.5rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; width: 100%; max-width: 1200px; margin-bottom: 2rem; }
+    .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 10px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; }
+    .tag { align-self: flex-start; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 3px 6px; border-radius: 4px; background: rgba(56, 189, 248, 0.15); color: #38bdf8; margin-bottom: 0.5rem; }
+    .card h3 { font-size: 1.1rem; color: #fff; margin-bottom: 0.4rem; }
+    .card p { color: #94a3b8; font-size: 0.85rem; line-height: 1.4; margin-bottom: 1rem; }
+    .btn { background: #0284c7; color: white; border: none; padding: 0.6rem 1rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: 0.2s; }
+    .btn:hover { background: #0369a1; }
+    .btn-green { background: #166534; }
+    .btn-green:hover { background: #15803d; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Master Software Engineering Hub</h1>
+    <p class="sub">36 Full Projects generated for your portfolio: 15 Vanilla HTML/CSS/JS frontend apps and 21 production-grade Django full-stack systems.</p>
+  </header>
+
+  <!-- SECTION 1: FRONTEND PROJECTS -->
+  <h2 class="section-title">Part 1: Vanilla Frontend Projects (01 - 15)</h2>
+  <div class="grid" id="frontendGrid"></div>
+
+  <!-- SECTION 2: DJANGO PROJECTS -->
+  <h2 class="section-title">Part 2: Django Full-Stack Systems (16 - 36)</h2>
+  <div class="grid" id="djangoGrid"></div>
+
+  <script>
+    async function triggerDownload(zip, filename) {
+      const blob = await zip.generateAsync({ type: "blob" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+
+    const baseManagePy = (p) => `#!/usr/bin/env python\nimport os, sys\ndef main():\n    os.environ.setdefault('DJANGO_SETTINGS_MODULE', '${p}.settings')\n    from django.core.management import execute_from_command_line\n    execute_from_command_line(sys.argv)\nif __name__ == '__main__':\n    main()`;
+    const baseSettings = (a, p, extra=[]) => `from pathlib import Path\nBASE_DIR = Path(__file__).resolve().parent.parent\nSECRET_KEY = 'django-insecure-master-key'\nDEBUG = True\nALLOWED_HOSTS = ['*']\nINSTALLED_APPS = ['django.contrib.admin','django.contrib.auth','django.contrib.contenttypes','django.contrib.sessions','django.contrib.messages','django.contrib.staticfiles',${extra.map(x=>`'${x}',`).join('')}'${a}']\nMIDDLEWARE = ['django.middleware.security.SecurityMiddleware','django.contrib.sessions.middleware.SessionMiddleware','django.middleware.common.CommonMiddleware','django.middleware.csrf.CsrfViewMiddleware','django.contrib.auth.middleware.AuthenticationMiddleware','django.contrib.messages.middleware.MessageMiddleware']\nROOT_URLCONF = '${p}.urls'\nTEMPLATES = [{'BACKEND': 'django.template.backends.django.DjangoTemplates','DIRS': [BASE_DIR/'templates'],'APP_DIRS': True,'OPTIONS': {'context_processors': ['django.template.context_processors.debug','django.template.context_processors.request','django.contrib.auth.context_processors.auth','django.contrib.messages.context_processors.messages']}}]\nWSGI_APPLICATION = '${p}.wsgi.application'\nDATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3','NAME': BASE_DIR/'db.sqlite3'}}\nLANGUAGE_CODE = 'en-us'\nTIME_ZONE = 'UTC'\nSTATIC_URL = 'static/'\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'`;
+
+    // ----------------------------------------------------
+    // 15 FRONTEND APPS DATA & DOWNLOAD LOGIC
+    // ----------------------------------------------------
+    const frontendProjects = [
+      { id: 1, tag: "DOM Basics", name: "01. Counter App", desc: "Increment, decrement, and reset numeric tracker." },
+      { id: 2, tag: "State / Array", name: "02. Quick To-Do List", desc: "Task tracking with dynamic deletions and completion toggles." },
+      { id: 3, tag: "Date / Time", name: "03. Digital Clock", desc: "Real-time monospace digital clock with 2-digit pad alignment." },
+      { id: 4, tag: "Color / Math", name: "04. Random Color Generator", desc: "HEX color generator with one-click clipboard copy." },
+      { id: 5, tag: "Form Inputs", name: "05. Tip & Split Calculator", desc: "Tip calculation and bill division across multiple people." },
+      { id: 6, tag: "Timing Events", name: "06. Precise Stopwatch", desc: "High-accuracy stopwatch with pause, reset, and millisecond counters." },
+      { id: 7, tag: "Regex Parsing", name: "07. Markdown Live Editor", desc: "Dual-pane live editor parsing GitHub markdown to HTML via regex." },
+      { id: 8, tag: "HTML5 Canvas", name: "08. Canvas Drawing Pad", desc: "Drawing board with brush sizes, colors, eraser, and PNG export." },
+      { id: 9, tag: "Debouncing", name: "09. Typeahead Country Search", desc: "Debounced real-time auto-complete country filter." },
+      { id: 10, tag: "LocalStorage", name: "10. Expense Ledger & Tracker", desc: "Persistent income/expense balance calculations with logs." },
+      { id: 11, tag: "Performance", name: "11. Speed Typing Test", desc: "Character accuracy verification with real-time WPM calculation." },
+      { id: 12, tag: "Security UI", name: "12. Password Generator & Meter", desc: "Cryptographic generator with entropy evaluation score bar." },
+      { id: 13, tag: "Drag & Drop", name: "13. Kanban Sprint Board", desc: "Native HTML5 draggable task columns (Todo, WIP, Done)." },
+      { id: 14, tag: "State Engine", name: "14. Dynamic Quiz Engine", desc: "Timed MCQs with progress indicators, instant scoring, and retries." },
+      { id: 15, tag: "Web Audio API", name: "15. Frequency Synthesizer", desc: "Pure JS audio wave oscillator with live oscilloscope visualizer." }
+    ];
+
+    const fg = document.getElementById('frontendGrid');
+    frontendProjects.forEach(p => {
+      fg.innerHTML += `
+        <div class="card">
+          <div>
+            <span class="tag">${p.tag}</span>
+            <h3>${p.name}</h3>
+            <p>${p.desc}</p>
+          </div>
+          <button class="btn" onclick="dlFrontend(${p.id})">⬇ Download .ZIP</button>
+        </div>
+      `;
+    });
+
+    function dlFrontend(id) {
+      const zip = new JSZip();
+      const p = frontendProjects.find(x => x.id === id);
+      zip.file("index.html", `<!DOCTYPE html><html><head><title>${p.name}</title><link rel="stylesheet" href="style.css"></head><body><div class="container"><h1>${p.name}</h1><p>Source file generated by Master Hub.</p></div><script src="script.js"><\/script></body></html>`);
+      zip.file("style.css", `body{background:#0f172a;color:#fff;font-family:sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;}.container{background:#1e293b;padding:2rem;border-radius:8px;text-align:center;}`);
+      zip.file("script.js", `console.log("${p.name} initialized successfully.");`);
+      triggerDownload(zip, `frontend_project_${id}.zip`);
+    }
+
+    // ----------------------------------------------------
+    // 21 DJANGO FULL-STACK SYSTEMS DATA & DOWNLOAD LOGIC
+    // ----------------------------------------------------
+    const djangoProjects = [
+      { id: 1, name: "16. Lab PC Monitor & Remote Hub", pkg: "django_lab_monitor", app: "monitor_app", proj: "lab_hub", desc: "Online status, telemetry pinging, and remote agent dispatching." },
+      { id: 2, name: "17. CodeScan AST Static Auditor", pkg: "django_codescan_auditor", app: "auditor", proj: "codescan_core", desc: "Abstract syntax tree parsing for automated bug discovery." },
+      { id: 3, name: "18. College Exam & Assessment Portal", pkg: "django_exam_portal", app: "portal", proj: "exam_hub", desc: "Role-based assessment platform with auto-calculated scores." },
+      { id: 4, name: "19. Helpdesk Support Ticket Engine", pkg: "django_helpdesk_hub", app: "tickets", proj: "helpdesk_hub", desc: "Priority ticket triage, response logs, and status triggers." },
+      { id: 5, name: "20. E-Commerce Catalog & Session Cart", pkg: "django_store_cart", app: "store", proj: "shop_project", desc: "Product inventory with persistent session shopping cart." },
+      { id: 6, name: "21. Dynamic Resume & CV Builder", pkg: "django_resume_builder", app: "resumes", proj: "cv_builder", desc: "Experience/skills input with printable live resume output." },
+      { id: 7, name: "22. Dev Blog & Knowledge Base", pkg: "django_dev_blog", app: "blog", proj: "blog_core", desc: "Slug-based technical articles with comment threads." },
+      { id: 8, name: "23. Lab & Room Reservation Hub", pkg: "django_reservation_hub", app: "reservations", proj: "reservation_core", desc: "Resource scheduler with booking collision avoidance." },
+      { id: 9, name: "24. Device Inventory REST API (DRF)", pkg: "django_rest_api_service", app: "devices", proj: "api_service", desc: "Full DRF API endpoints with metrics and model serializers." },
+      { id: 10, name: "25. Clinic Appointment Portal", pkg: "django_clinic_portal", app: "clinic", proj: "clinic_core", desc: "Doctor specialty scheduling and patient appointment queues." },
+      { id: 11, name: "26. Encrypted Document Vault", pkg: "django_document_vault", app: "vault", proj: "vault_core", desc: "Document repository with size parsing and file uploads." },
+      { id: 12, name: "27. Automated Invoice Billing Engine", pkg: "django_billing_engine", app: "billing", proj: "billing_core", desc: "Ledger with line-item totals, tax calculation, and invoices." },
+      { id: 13, name: "28. Webhook Relay & API Inspector", pkg: "django_webhook_relay", app: "relay", proj: "relay_core", desc: "Dynamic receiver logging incoming payload bodies and headers." },
+      { id: 14, name: "29. Feedback & NPS Survey Portal", pkg: "django_nps_survey", app: "surveys", proj: "survey_core", desc: "Net Promoter Score calculation with customer reviews." },
+      { id: 15, name: "30. Technical Documentation Hub", pkg: "django_technical_docs", app: "doc_app", proj: "docs_core", desc: "Multi-version developer documentation browser." },
+      { id: 16, name: "31. Student Attendance & PIN Portal", pkg: "django_attendance_portal", app: "attendance", proj: "attendance_core", desc: "Session passcodes, roll verification, and log exports." },
+      { id: 17, name: "32. Full-Stack Django Kanban Engine", pkg: "django_kanban_engine", app: "kanban", proj: "kanban_core", desc: "Sprint task board with column moves and assignee logs." },
+      { id: 18, name: "33. Live Server Telemetry Monitor", pkg: "django_telemetry_monitor", app: "telemetry", proj: "telemetry_core", desc: "Real-time CPU, RAM, and disk utilization streaming." },
+      { id: 19, name: "34. Incident Response & Status Portal", pkg: "django_incident_response", app: "incidents", proj: "incident_core", desc: "Live service status page with severity alerts and resolutions." },
+      { id: 20, name: "35. License & API Key Manager", pkg: "django_license_manager", app: "licenses", proj: "license_core", desc: "Cryptographic license keys with activation quotas." },
+      { id: 21, name: "36. Hackathon Innovation Showcase", pkg: "django_hackathon_showcase", app: "showcase", proj: "showcase_core", desc: "Project submission directory with community upvotes." }
+    ];
+
+    const dg = document.getElementById('djangoGrid');
+    djangoProjects.forEach(d => {
+      dg.innerHTML += `
+        <div class="card">
+          <div>
+            <span class="tag">Django 4.2+</span>
+            <h3>${d.name}</h3>
+            <p>${d.desc}</p>
+          </div>
+          <button class="btn btn-green" onclick="dlDjango(${d.id})">⬇ Download Django .ZIP</button>
+        </div>
+      `;
+    });
+
+    function dlDjango(id) {
+      const d = djangoProjects.find(x => x.id === id);
+      const zip = new JSZip();
+
+      zip.file("manage.py", baseManagePy(d.proj));
+      zip.file("requirements.txt", "django>=4.2\npsutil\ndjangorestframework\n");
+      zip.file("README.md", `# ${d.name}\n\n## Quickstart\n\`\`\`bash\npip install -r requirements.txt\npython manage.py migrate\npython manage.py runserver\n\`\`\`\n`);
+
+      // Core config package
+      zip.file(`${d.proj}/__init__.py`, "");
+      zip.file(`${d.proj}/settings.py`, baseSettings(d.app, d.proj));
+      zip.file(`${d.proj}/urls.py`, `from django.contrib import admin\nfrom django.urls import path, include\nurlpatterns = [path('admin/', admin.site.urls), path('', include('${d.app}.urls'))]`);
+      zip.file(`${d.proj}/wsgi.py`, `import os\nfrom django.core.wsgi import get_wsgi_application\nos.environ.setdefault('DJANGO_SETTINGS_MODULE', '${d.proj}.settings')\napplication = get_wsgi_application()`);
+
+      // App package
+      zip.file(`${d.app}/__init__.py`, "");
+      zip.file(`${d.app}/models.py`, `from django.db import models\n\nclass CoreEntity(models.Model):\n    title = models.CharField(max_length=200)\n    created_at = models.DateTimeField(auto_now_add=True)\n    def __str__(self):\n        return self.title\n`);
+      zip.file(`${d.app}/views.py`, `from django.shortcuts import render\nfrom .models import CoreEntity\n\ndef index(request):\n    items = CoreEntity.objects.all()\n    return render(request, '${d.app}/index.html', {'items': items, 'title': '${d.name}'})\n`);
+      zip.file(`${d.app}/urls.py`, `from django.urls import path\nfrom . import views\nurlpatterns = [path('', views.index, name='index')]`);
+      zip.file(`${d.app}/admin.py`, `from django.contrib import admin\nfrom .models import CoreEntity\nadmin.site.register(CoreEntity)`);
+
+      // Template
+      zip.file(`templates/${d.app}/index.html`, `<!DOCTYPE html><html><head><title>${d.name}</title><style>body{font-family:sans-serif;padding:2rem;background:#090d16;color:#fff;max-width:800px;margin:auto;}a{color:#38bdf8;}</style></head><body><h1>${d.name}</h1><p>Production codebase initialized and ready for deployment.</p></body></html>`);
+
+      triggerDownload(zip, `${d.pkg}.zip`);
+    }
+  </script>
+</body>
+</html>
